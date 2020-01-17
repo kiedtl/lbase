@@ -18,7 +18,7 @@ clean:
 cat: cat.o
 	$(CC) $(CFLAGS)   -o $@ $^
 
-head: head.o
+head: head.o argoat.o
 	$(CC) $(CFLAGS)   -o $@ $^
 
 .PHONY: all lbase clean
