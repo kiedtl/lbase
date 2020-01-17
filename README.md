@@ -3,6 +3,9 @@
 A reimplementation of the GNU coreutils with a focus on speed, size, and
 compatibility with GNU coreutils.
 
+> NOTE: some redundant utilities will not be supported (e.g. `tac` instead of `rev`).
+> If you want to change my mind, open an issue and I'll consider it.
+
 ## status
 
 - [x] cat
@@ -10,6 +13,7 @@ compatibility with GNU coreutils.
 	- does not (and will not) support `-abeEnstTv`
 	- faster when reading small files, slower when reading larger files.
 - [ ] tac
+	- will not be supported.
 - [ ] nl
 - [ ] od
 - [ ] base32
