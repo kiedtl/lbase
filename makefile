@@ -3,7 +3,7 @@ WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
 INC      = -Isub/ccommon/
 
 CC       = gcc
-CFLAGS   = -std=c99 -O3 $(WARNING) $(INC) -ggdb
+CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb
 LDFLAGS  =
 
 DESTDIR  =
@@ -15,10 +15,16 @@ lbase: cat head
 clean:
 	rm -f cat head *.o
 
+.c.o:
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS) -c $<
+
 cat: cat.o
-	$(CC) $(CFLAGS)   -o $@ $^
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS)   -o $@ $^
 
 head: head.o argoat.o
-	$(CC) $(CFLAGS)   -o $@ $^
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS)   -o $@ $^
 
 .PHONY: all lbase clean
