@@ -3,8 +3,7 @@
 
 #include <stdio.h>
 #define NAME  "cat"
-#define CHUNK 1024
 
-void cat(FILE *f);
+void cat(FILE *f, char *path);
 
 #endif
