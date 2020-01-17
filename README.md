@@ -5,7 +5,10 @@ compatibility with GNU coreutils.
 
 ## status
 
-- [ ] cat
+- [x] cat
+	- supports `-u` (ignores)
+	- does not (and will not) support `-abeEnstTuv`
+	- faster when reading small files, slower when reading larger files.
 - [ ] tac
 - [ ] nl
 - [ ] od

@@ -13,7 +13,7 @@ all: lbase
 lbase: cat
 
 clean:
-	rm -f cat
+	rm -f cat *.o
 
 cat: cat.o
 	$(CC) $(CFLAGS) -o $@ $^

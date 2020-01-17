@@ -5,5 +5,6 @@
 #define NAME  "cat"
 
 void cat(FILE *f, char *path);
+void help(void);
 
 #endif

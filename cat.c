@@ -9,20 +9,64 @@
 int
 main(int argc, char *argv[])
 {
+	/* read stdin if no arguments */
 	if (argc < 2) {
-		cat(stdin, "-");
+		cat(stdin, "");
 		return 0;
 	}
 
-	// don't read yourself!
+	/* ignore first argument */
 	for (usize i = 1; i < argc; i++) {
-		if (strcmp(argv[i], "-") == 0) {
-			cat(stdin, "-");
-			continue;
-		}
+		/*
+		 * primitive argument parsing
+		 * reasons for not using full-fledged
+		 * argument parsing:
+		 * a) pure laziness
+		 * b) for speed (?)
+		 * c) we only support --help and --version anyway
+		*/
+		if (argv[i][0] == '-') {
+			/* if argument is -, read from stdin */
+			if (strlen(argv[i]) == 1) {
+				cat(stdin, "");
+				continue;
+			} else {
+				switch (argv[i][1]) {
+				case '-':
+					if (strcmp(argv[i], "--help") == 0) {
+						help();
+						return 0;
+					} else if (strcmp(argv[i], "--version") == 0) {
+						VERSION(NAME);
+						return 0;
+					}
 
-		if (strcmp(argv[i], "-u") == 0)
-			continue;
+					break;
+				/* ignored */
+				case 'u':
+				case 'A':
+				case 'b':
+				case 'e':
+				case 'E':
+				case 'n':
+				case 's':
+				case 't':
+				case 'T':
+				case 'v':
+					continue;
+				/* show help */
+				case 'h':
+					help();
+					return 0;
+					break;
+				/* everything else */
+				default:
+					EPRINT("%s: unknown option '%c'.\n", NAME, argv[i][1]);
+					return 0;
+					break;
+				}
+			}
+		}
 
 		FILE *f;
 		if ((f = fopen(argv[i], "r")) == NULL) {
@@ -37,6 +81,23 @@ main(int argc, char *argv[])
 	return 0;
 }
 
+/* show help */
+void
+help(void)
+{
+	EPRINT("Usage: %s [--help|--version] [FILE]...\n", NAME);
+	EPRINT("Concatenate FILE(s) to stdout.\n");
+	EPRINT("With no arguments, or when FILE is -, stdin is read.\n\n");
+	EPRINT("FLAGS:\n")
+	EPRINT("        --version    Show version and exit.\n")
+	EPRINT("    -h  --help       Show this help message and exit.\n\n");
+	EPRINT("EXAMPLES:\n");
+	EPRINT("    cat f - g    Read file f, then stdin, then g.\n");
+	EPRINT("    cat          Copy standard input to standard output.\n\n");
+	EPRINT("Report issues to https://github.com/kiedtl/lbase.\n");
+}
+
+/* meat of this program */
 void
 cat(FILE *f, char *path)
 {
