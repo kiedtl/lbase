@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "types.h"
 #include "common.h"
 #include "cat.h"
@@ -24,8 +25,9 @@ main(int argc, char *argv[])
 
 		FILE *f;
 		if ((f = fopen(argv[i], "r")) == NULL) {
-			EPRINT("%s: error:");
-			perror("fopen()");
+			EPRINT("%s: %s: ", NAME, argv[i]);
+			perror("");
+			return 0;
 		}
 
 		cat(f);
