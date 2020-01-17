@@ -7,7 +7,7 @@ compatibility with GNU coreutils.
 
 - [x] cat
 	- supports `-u` (ignores)
-	- does not (and will not) support `-abeEnstTuv`
+	- does not (and will not) support `-abeEnstTv`
 	- faster when reading small files, slower when reading larger files.
 - [ ] tac
 - [ ] nl
