@@ -10,12 +10,15 @@ DESTDIR  =
 PREFIX   = /usr/local/
 
 all: lbase
-lbase: cat
+lbase: cat head
 
 clean:
-	rm -f cat *.o
+	rm -f cat head *.o
 
 cat: cat.o
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS)   -o $@ $^
+
+head: head.o
+	$(CC) $(CFLAGS)   -o $@ $^
 
 .PHONY: all lbase clean
