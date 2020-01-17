@@ -1,2 +1,8 @@
+# ignore vim's swap files
 **/*.*.swp
+
+# ignore object files
 *.o
+
+# ignore binaries
+cat
