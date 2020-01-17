@@ -1,6 +1,3 @@
 [submodule "sub/ccommon"]
 	path = sub/ccommon
 	url = git://github.com/lptstr/ccommon.git
-[submodule "sub/argoat"]
-	path = sub/argoat
-	url = git://github.com/cylgom/argoat.git
