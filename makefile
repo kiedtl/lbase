@@ -3,7 +3,7 @@ WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
 INC      = -Isub/ccommon/
 
 CC       = gcc
-CFLAGS   = -std=c99 -O3 $(WARNING) $(INC)
+CFLAGS   = -std=c99 -O3 $(WARNING) $(INC) -ggdb
 LDFLAGS  =
 
 DESTDIR  =
