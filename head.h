@@ -26,5 +26,6 @@ void help(void *data, char **pars, const int pars_count);
 void version(void *data, char **pars, const int pars_count);
 void handle_main(void *data, char **pars, const int pars_count);
 void handle_number(void *data, char **pars, const int pars_count);
+void handle_bool(void *data, char **pars, const int pars_count);
 
 #endif
