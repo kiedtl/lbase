@@ -151,6 +151,12 @@ handle_number(void *data, char **pars, const int pars_count)
 	*/
 	bool contin = TRUE;
 	for (usize i = 0; contin && i < len; ++i, ++p) {
+		/* handle negative integers */
+		if (*p == '-' && i == 0) {
+			EPRINT("%s: negative integers are invalid in this context.\n", NAME);
+			exit(1);
+		}
+
 		if (*p > 0x2F && *p < 0x3A)
 			amount = (amount * 10) + (*p - '0');
 		else {
