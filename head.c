@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,15 +27,19 @@ main(int argc, char **argv)
 
 	/* parse arguments with argoat */
 	char *files[FILE_MAX];
-	const struct argoat_sprig sprigs[5] = {
-		{ NULL,      0, NULL, handle_main },
-		{ "version", 0, NULL, version     },
-		{ "v",       0, NULL, version     },
-		{ "help",    0, NULL, help        },
-		{ "h",       0, NULL, help        },
+	const struct argoat_sprig sprigs[9] = {
+		{ NULL,      0, NULL,                handle_main   },
+		{ "version", 0, NULL,                version       },
+		{ "v",       0, NULL,                version       },
+		{ "help",    0, NULL,                help          },
+		{ "h",       0, NULL,                help          },
+		{ "bytes",   1, (void*) &opts.bytes, handle_number },
+		{ "c",       1, (void*) &opts.bytes, handle_number },
+		{ "lines",   1, (void*) &opts.lines, handle_number },
+		{ "n",       1, (void*) &opts.lines, handle_number },
 	};
 
-	struct argoat args = { sprigs, 5, files, 0, FILE_MAX };
+	struct argoat args = { sprigs, 9, files, 0, FILE_MAX };
 
 	files_len = 0;
 	argoat_graze(&args, argc, argv);
@@ -110,4 +115,83 @@ void
 handle_main(void *data, char **pars, const int pars_count)
 {
 	files_len = pars_count;
+}
+
+/* parse pseudo-integers like 100kB or 20MiB */
+void
+handle_number(void *data, char **pars, const int pars_count)
+{
+	/*
+	 * format: <integer><unit>
+	 * e.g.: 200MiB, 3kB, 28G, etc.
+	 * parse integer first, then parse
+	 * suffix.
+	*/
+	u64  amount = 0;
+	//char suffix[10];
+
+	/*
+	 * only first parameter is parsed,
+	 * the rest are ignored.
+	*/
+	u64  len = strlen(pars[0]);
+	char *p = pars[0];
+
+	/* convert suffixes to lowercase */
+	char *tmp = p;
+	while ((*p = tolower(*p))) ++p;
+	p = tmp;
+
+	/* add new digit to amount */
+	bool contin = TRUE;
+	for (usize i = 0; contin && i < len; ++i, ++p) {
+		switch (*p) {
+		case '0':
+			amount = (amount * 10);
+			break;
+		case '1':
+			amount = (amount * 10) + 1;
+			break;
+		case '2':
+			amount = (amount * 10) + 2;
+			break;
+		case '3':
+			amount = (amount * 10) + 3;
+			break;
+		case '4':
+			amount = (amount * 10) + 4;
+			break;
+		case '5':
+			amount = (amount * 10) + 5;
+			break;
+		case '6':
+			amount = (amount * 10) + 6;
+			break;
+		case '7':
+			amount = (amount * 10) + 7;
+			break;
+		case '8':
+			amount = (amount * 10) + 8;
+			break;
+		case '9':
+			amount = (amount * 10) + 9;
+			break;
+		default:
+			contin = FALSE;
+			break;
+		}
+	}
+
+	/* 
+	 * check suffix
+	 * a sidenote: the dim bulbs at GNU
+	 * support P, E, Z, Y as suffixes,
+	 * but I see no reason to support that, 
+	 * especially since the maximum file size
+	 * of ext4 is 16T :P
+	*/
+	
+	/* TODO: support suffixes */
+
+	*((usize*) data) = amount;
 }
