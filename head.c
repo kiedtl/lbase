@@ -30,7 +30,6 @@ main(int argc, char **argv)
 	const struct argoat_sprig sprigs[9] = {
 		{ NULL,      0, NULL,                handle_main   },
 		{ "version", 0, NULL,                version       },
-		{ "v",       0, NULL,                version       },
 		{ "help",    0, NULL,                help          },
 		{ "h",       0, NULL,                help          },
 		{ "bytes",   1, (void*) &opts.bytes, handle_number },
@@ -172,6 +171,7 @@ handle_number(void *data, char **pars, const int pars_count)
 	for (; i < sizeof(suffix) && *p; ++i, ++p)
 		suffix[i] = *p;
 
+	/* TODO: cleanup this mess */
 	if (strlen(suffix) == 0) {
 		/* do nothing */
 	} else if (strcmp(suffix, "b") == 0)
@@ -209,7 +209,8 @@ handle_number(void *data, char **pars, const int pars_count)
 	else if (strcmp(suffix, "y") == 0 || strcmp(suffix, "yib") == 0)
 		amount = amount * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024;
 	else {
-		EPRINT("%s: either '%s' isn't a valid number, or '%s' is garbage.\n", NAME, pars[0], suffix);
+		EPRINT("%s: either '%s' isn't a valid number,", NAME, pars[0]);
+		EPRINT("or '%s' is garbage.\n", suffix);
 		exit(1);
 	}
 
