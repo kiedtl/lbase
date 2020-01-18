@@ -27,19 +27,19 @@ main(int argc, char **argv)
 	/* parse arguments with argoat */
 	char *files[FILE_MAX];
 	const struct argoat_sprig sprigs[14] = {
-		{ NULL,              0, NULL,                  handle_main   },
-		{ "version",         0, NULL,                  version       },
-		{ "help",            0, NULL,                  help          },
-		{ "h",               0, NULL,                  help          },
-		{ "bytes",           1, (void*) &opts.bytes,   handle_number },
-		{ "c",               1, (void*) &opts.bytes,   handle_number },
-		{ "lines",           1, (void*) &opts.lines,   handle_number },
-		{ "n",               1, (void*) &opts.lines,   handle_number },
-		{ "q",               0, (void*) &opts.quiet,   handle_bool   },
-		{ "quiet",           0, (void*) &opts.quiet,   handle_bool   },
-		{ "silent",          0, (void*) &opts.quiet,   handle_bool   },
-		{ "verbose",         0, (void*) &opts.verbose, handle_bool   },
-		{ "v",               0, (void*) &opts.verbose, handle_bool   },
+		{ NULL,      0, NULL,                  handle_main   },
+		{ "version", 0, NULL,                  version       },
+		{ "help",    0, NULL,                  help          },
+		{ "h",       0, NULL,                  help          },
+		{ "bytes",   1, (void*) &opts.bytes,   handle_number },
+		{ "c",       1, (void*) &opts.bytes,   handle_number },
+		{ "lines",   1, (void*) &opts.lines,   handle_number },
+		{ "n",       1, (void*) &opts.lines,   handle_number },
+		{ "q",       0, (void*) &opts.quiet,   handle_bool   },
+		{ "quiet",   0, (void*) &opts.quiet,   handle_bool   },
+		{ "silent",  0, (void*) &opts.quiet,   handle_bool   },
+		{ "verbose", 0, (void*) &opts.verbose, handle_bool   },
+		{ "v",       0, (void*) &opts.verbose, handle_bool   },
 	};
 
 	struct argoat args = { sprigs, sizeof(sprigs), files, 0, FILE_MAX };
