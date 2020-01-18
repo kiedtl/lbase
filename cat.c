@@ -16,7 +16,7 @@ main(int argc, char *argv[])
 	}
 
 	/* ignore first argument */
-	for (usize i = 1; i < argc; i++) {
+	for (usize i = 1; i < (usize) argc; i++) {
 		/*
 		 * primitive argument parsing
 		 * reasons for not using full-fledged

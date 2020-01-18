@@ -1,5 +1,6 @@
 WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
-	   -Wold-style-definition -Werror
+	   -Wold-style-definition -Werror \
+	   -Wno-unused-parameter
 INC      = -Isub/ccommon/
 
 CC       = gcc
