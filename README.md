@@ -1,10 +1,12 @@
 # lbase
 
-A reimplementation of the GNU coreutils with a focus on speed, size, and
-compatibility with GNU coreutils.
+A reimplementation of the GNU coreutils with a focus on speed and size.
 
-> NOTE: some redundant utilities will not be supported (e.g. `tac` instead of `rev`).
-> If you want to change my mind, open an issue and I'll consider it.
+**notes:
+- some redundant utilities will not be supported (e.g. `tac` instead of `rev`).
+- certain flags will not be supported (e.g. `cat -v`).
+
+If you want to change my mind, open an issue and I'll consider it.
 
 ## status
 
@@ -22,7 +24,9 @@ compatibility with GNU coreutils.
 - [ ] fmt
 - [ ] pr
 - [ ] fold
-- [ ] head
+- [x] head
+	- doesn't support `head -n -123` (yet).
+	- doesn't (and won't) support `--zero-terminated`.
 - [ ] tail
 - [ ] split
 - [ ] csplit

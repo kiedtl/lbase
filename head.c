@@ -16,7 +16,6 @@ main(int argc, char **argv)
 		opts.bytes          = 0,
 		opts.quiet          = FALSE,
 		opts.verbose        = FALSE,
-		opts.nul_terminated = FALSE
 	};
 
 	/* read stdin if no arguments */
@@ -27,22 +26,20 @@ main(int argc, char **argv)
 
 	/* parse arguments with argoat */
 	char *files[FILE_MAX];
-	const struct argoat_sprig sprigs[16] = {
-		{ NULL,              0, NULL,                         handle_main   },
-		{ "version",         0, NULL,                         version       },
-		{ "help",            0, NULL,                         help          },
-		{ "h",               0, NULL,                         help          },
-		{ "bytes",           1, (void*) &opts.bytes,          handle_number },
-		{ "c",               1, (void*) &opts.bytes,          handle_number },
-		{ "lines",           1, (void*) &opts.lines,          handle_number },
-		{ "n",               1, (void*) &opts.lines,          handle_number },
-		{ "q",               0, (void*) &opts.quiet,          handle_bool   },
-		{ "quiet",           0, (void*) &opts.quiet,          handle_bool   },
-		{ "silent",          0, (void*) &opts.quiet,          handle_bool   },
-		{ "verbose",         0, (void*) &opts.verbose,        handle_bool   },
-		{ "v",               0, (void*) &opts.verbose,        handle_bool   },
-		{ "zero-terminated", 0, (void*) &opts.nul_terminated, handle_bool   },
-		{ "z",               0, (void*) &opts.nul_terminated, handle_bool   },
+	const struct argoat_sprig sprigs[14] = {
+		{ NULL,              0, NULL,                  handle_main   },
+		{ "version",         0, NULL,                  version       },
+		{ "help",            0, NULL,                  help          },
+		{ "h",               0, NULL,                  help          },
+		{ "bytes",           1, (void*) &opts.bytes,   handle_number },
+		{ "c",               1, (void*) &opts.bytes,   handle_number },
+		{ "lines",           1, (void*) &opts.lines,   handle_number },
+		{ "n",               1, (void*) &opts.lines,   handle_number },
+		{ "q",               0, (void*) &opts.quiet,   handle_bool   },
+		{ "quiet",           0, (void*) &opts.quiet,   handle_bool   },
+		{ "silent",          0, (void*) &opts.quiet,   handle_bool   },
+		{ "verbose",         0, (void*) &opts.verbose, handle_bool   },
+		{ "v",               0, (void*) &opts.verbose, handle_bool   },
 	};
 
 	struct argoat args = { sprigs, sizeof(sprigs), files, 0, FILE_MAX };
@@ -97,17 +94,6 @@ head(FILE *f, struct Options *opts)
 		int c = 0;
 		usize l = 0;
 		while ((c = getc(f)) != EOF && l < opts->lines) {
-			/*
-			 * output NUL instead of LF
-			 * if zero-terminated
-			*/
-			if (opts->nul_terminated) {
-				if (c == 10) {
-					putchar(0);
-					continue;
-				}
-			}
-
 			putchar(c);
 
 			/* increment if char is newline */

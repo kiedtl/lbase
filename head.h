@@ -17,7 +17,6 @@ typedef struct Options {
 	usize bytes;
 	bool  quiet;
 	bool  verbose;
-	bool  nul_terminated;
 } Options;
 
 /* function prototypes */
