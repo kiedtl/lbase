@@ -11,10 +11,10 @@ DESTDIR  =
 PREFIX   = /usr/local/
 
 all: lbase
-lbase: cat head
+lbase: cat head wc
 
 clean:
-	rm -f cat head *.o
+	rm -f cat head wc *.o
 
 .c.o:
 	@echo "CC\t$@"
@@ -25,6 +25,10 @@ cat: cat.o
 	@$(CC) $(CFLAGS)   -o $@ $^
 
 head: head.o argoat.o
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS)   -o $@ $^
+
+wc: wc.o argoat.o common.o
 	@echo "CC\t$@"
 	@$(CC) $(CFLAGS)   -o $@ $^
 
