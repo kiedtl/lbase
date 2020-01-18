@@ -10,6 +10,8 @@
 #define FILE_MAX 999
 
 /* argument parsing */
+usize files_len;
+
 typedef struct Options {
 	usize lines;
 	usize bytes;
@@ -19,7 +21,7 @@ typedef struct Options {
 } Options;
 
 /* function prototypes */
-void head(FILE *f, char *path);
+void head(FILE *f, struct Options *opts);
 void handle_main(void *data, char **pars, const int pars_count);
 void help(void *data, char **pars, const int pars_count);
 void version(void *data, char **pars, const int pars_count);
