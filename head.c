@@ -151,43 +151,11 @@ handle_number(void *data, char **pars, const int pars_count)
 	*/
 	bool contin = TRUE;
 	for (usize i = 0; contin && i < len; ++i, ++p) {
-		if (*p > 0x2F && *p < 0x3A) {
+		if (*p > 0x2F && *p < 0x3A)
 			amount = (amount * 10) + (*p - '0');
-		}
-		case '0':
-			amount = (amount * 10);
-			break;
-		case '1':
-			amount = (amount * 10) + 1;
-			break;
-		case '2':
-			amount = (amount * 10) + 2;
-			break;
-		case '3':
-			amount = (amount * 10) + 3;
-			break;
-		case '4':
-			amount = (amount * 10) + 4;
-			break;
-		case '5':
-			amount = (amount * 10) + 5;
-			break;
-		case '6':
-			amount = (amount * 10) + 6;
-			break;
-		case '7':
-			amount = (amount * 10) + 7;
-			break;
-		case '8':
-			amount = (amount * 10) + 8;
-			break;
-		case '9':
-			amount = (amount * 10) + 9;
-			break;
-		default:
+		else {
 			contin = FALSE;
 			--p;
-			break;
 		}
 	}
 
