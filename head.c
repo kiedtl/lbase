@@ -102,13 +102,14 @@ head(FILE *f, struct Options *opts)
 void
 help(void *data, char **pars, const int pars_count)
 {
-
+	exit(0);
 }
 
 void
 version(void *data, char **pars, const int pars_count)
 {
 	VERSION(NAME);
+	exit(0);
 }
 
 void
@@ -128,7 +129,8 @@ handle_number(void *data, char **pars, const int pars_count)
 	 * suffix.
 	*/
 	u64  amount = 0;
-	//char suffix[10];
+	/* suffix buffer */
+	char suffix[5] = { 0, 0, 0, 0, 0 };
 
 	/*
 	 * only first parameter is parsed,
@@ -142,10 +144,16 @@ handle_number(void *data, char **pars, const int pars_count)
 	while ((*p = tolower(*p))) ++p;
 	p = tmp;
 
-	/* add new digit to amount */
+	/*
+	 * add new digit to amount
+	 * stop when invalid digit is encountered
+	 *
+	*/
 	bool contin = TRUE;
 	for (usize i = 0; contin && i < len; ++i, ++p) {
-		switch (*p) {
+		if (*p > 0x2F && *p < 0x3A) {
+			amount = (amount * 10) + (*p - '0');
+		}
 		case '0':
 			amount = (amount * 10);
 			break;
@@ -178,20 +186,60 @@ handle_number(void *data, char **pars, const int pars_count)
 			break;
 		default:
 			contin = FALSE;
+			--p;
 			break;
 		}
 	}
 
 	/* 
 	 * check suffix
-	 * a sidenote: the dim bulbs at GNU
-	 * support P, E, Z, Y as suffixes,
-	 * but I see no reason to support that, 
-	 * especially since the maximum file size
-	 * of ext4 is 16T :P
 	*/
-	
-	/* TODO: support suffixes */
+	usize i = 0;
+	for (; i < sizeof(suffix) && *p; ++i, ++p)
+		suffix[i] = *p;
 
+	if (strlen(suffix) == 0) {
+		/* do nothing */
+	} else if (strcmp(suffix, "b") == 0)
+		amount = amount * 512;
+	else if (strcmp(suffix, "kb") == 0)
+		amount = amount * 1000;
+	else if (strcmp(suffix, "mb") == 0)
+		amount = amount * 1000 * 1000;
+	else if (strcmp(suffix, "gb") == 0)
+		amount = amount * 1000 * 1000 * 1000;
+	else if (strcmp(suffix, "tb") == 0)
+		amount = amount * 1000 * 1000 * 1000 * 1000;
+	else if (strcmp(suffix, "pb") == 0)
+		amount = amount * 1000 * 1000 * 1000 * 1000 * 1000;
+	else if (strcmp(suffix, "eb") == 0)
+		amount = amount * 1000 * 1000 * 1000 * 1000 * 1000 * 1000;
+	else if (strcmp(suffix, "zb") == 0)
+		amount = amount * 1000 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000;
+	else if (strcmp(suffix, "yb") == 0)
+		amount = amount * 1000 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000 * 1000;
+	else if (strcmp(suffix, "k") == 0 || strcmp(suffix, "kib") == 0)
+		amount = amount * 1024;
+	else if (strcmp(suffix, "m") == 0 || strcmp(suffix, "mib") == 0)
+		amount = amount * 1024 * 1024;
+	else if (strcmp(suffix, "g") == 0 || strcmp(suffix, "gib") == 0)
+		amount = amount * 1024 * 1024 * 1024;
+	else if (strcmp(suffix, "t") == 0 || strcmp(suffix, "tib") == 0)
+		amount = amount * 1024 * 1024 * 1024 * 1024;
+	else if (strcmp(suffix, "p") == 0 || strcmp(suffix, "pib") == 0)
+		amount = amount * 1024 * 1024 * 1024 * 1024 * 1024;
+	else if (strcmp(suffix, "e") == 0 || strcmp(suffix, "eib") == 0)
+		amount = amount * 1024 * 1024 * 1024 * 1024 * 1024 * 1024;
+	else if (strcmp(suffix, "z") == 0 || strcmp(suffix, "zib") == 0)
+		amount = amount * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024;
+	else if (strcmp(suffix, "y") == 0 || strcmp(suffix, "yib") == 0)
+		amount = amount * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024;
+	else {
+		EPRINT("%s: either '%s' isn't a valid number, or '%s' is garbage.\n", NAME, pars[0], suffix);
+		exit(1);
+	}
+
+
+	
 	*((usize*) data) = amount;
 }
