@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "types.h"
 #define NAME     "wc"
-#define PADDING  5
+#define PADDING  2
 
 /* limitation of argoat */
 #define FILE_MAX 999
