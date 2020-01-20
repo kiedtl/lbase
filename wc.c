@@ -22,8 +22,6 @@ main(int argc, char *argv[])
 		opts->lines   = FALSE;
 		opts->width   = FALSE;
 		opts->words   = FALSE;
-		opts->verbose = FALSE;
-		opts->cmode   = mode_normal;
 	}
 
 	/* read stdin if no arguments */

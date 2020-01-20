@@ -12,15 +12,6 @@
 /* argument parsing */
 usize files_len;
 
-enum Mode {
-	mode_normal,
-	mode_bytes,
-	mode_chars,
-	mode_lines,
-	mode_width,
-	mode_words
-};
-
 typedef struct Options {
 	bool normal;
 	bool bytes;
@@ -28,8 +19,6 @@ typedef struct Options {
 	bool lines;
 	bool width;
 	bool words;
-	bool verbose;
-	enum Mode cmode;
 } Options;
 
 typedef struct Result {
