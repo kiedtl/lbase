@@ -7,3 +7,4 @@
 # ignore binaries
 cat
 head
+wc

@@ -10,4 +10,6 @@
 #define EPRINT(...)   fprintf(stderr, __VA_ARGS__);
 
 usize intlen(u64 i);
+char* to_string(u64 i);
+
 #endif

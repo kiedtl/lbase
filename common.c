@@ -1,5 +1,7 @@
+#include "common.h"
 #include "types.h"
 
+/* get number of digits in integer */
 usize
 intlen(u64 i)
 {

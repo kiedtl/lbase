@@ -29,7 +29,7 @@ typedef struct Options {
 	bool width;
 	bool words;
 	bool verbose;
-	Mode cmode;
+	enum Mode cmode;
 } Options;
 
 typedef struct Result {
@@ -38,11 +38,12 @@ typedef struct Result {
 	u64 lines;
 	u64 width;
 	u64 words;
+	char *path;
 } Result;
 
 /* function prototypes */
 void handle_main(void *data, char **pars, const int pars_count);
-struct Result wc(FILE *f);
+struct Result wc(FILE *f, char *path);
 void format_results(struct Result result[], usize count);
 void handle_flag(void *data, char **pars, const int pars_count);
 void help(void *data, char **pars, const int pars_count);
