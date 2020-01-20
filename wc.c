@@ -40,11 +40,13 @@ main(int argc, char *argv[])
 		{ "m",                0, (void*) &opts->chars, handle_flag },
 		{ "lines",            0, (void*) &opts->chars, handle_flag },
 		{ "l",                0, (void*) &opts->lines, handle_flag },
-		{ "max-lines-length", 0, (void*) &opts->lines, handle_flag },
-		{ "L",                0, (void*) &opts->lines, handle_flag },
-		{ "help",             0, NULL,                help,       },
-		{ "h",                0, NULL,                help,       },
-		{ "version",          0, NULL,                version,    },
+		{ "words",            0, (void*) &opts->words, handle_flag },
+		{ "w",                0, (void*) &opts->words, handle_flag },
+		{ "max-lines-length", 0, (void*) &opts->width, handle_flag },
+		{ "L",                0, (void*) &opts->width, handle_flag },
+		{ "help",             0, NULL,                 help,       },
+		{ "h",                0, NULL,                 help,       },
+		{ "version",          0, NULL,                 version,    },
 	};
 
 	/* parse arguments, main loop is in handle_main  */
