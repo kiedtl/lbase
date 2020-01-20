@@ -26,7 +26,7 @@ main(int argc, char *argv[])
 
 	/* read stdin if no arguments */
 	if (argc < 2) {
-		wc(stdin, "stdin");
+		wc(stdin, "");
 		return 0;
 	}
 
@@ -61,7 +61,7 @@ handle_main(void *data, char **pars, const int pars_count)
 	/* main loop */
 	for (usize i = 0; i < (usize) pars_count; ++i) {
 		if (strcmp(pars[i], "-") == 0) {
-			wc(stdin, "stdin");
+			wc(stdin, "");
 			continue;
 		}
 
