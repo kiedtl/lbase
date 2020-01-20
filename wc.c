@@ -233,14 +233,24 @@ format_results(struct Result results[], usize count)
 	}
 
 	/* print total */
-	if (count > 1)
-		fprintf(stdout, "%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%s\n",
-				0x1B, (PADDING + line_padding) - intlen(totals.lines), totals.lines,
-				0x1B, (PADDING + word_padding) - intlen(totals.words), totals.words,
-				0x1B, (PADDING + char_padding) - intlen(totals.chars), totals.chars,
-				0x1B, (PADDING + byte_padding) - intlen(totals.bytes), totals.bytes,
-				0x1B, (PADDING + width_padding) - intlen(totals.width), totals.width,
-				0x1B, PADDING, totals.path);
+	if (count > 1) {
+		if (opts->normal || opts->lines)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
+				(PADDING + line_padding) - intlen(totals.lines), totals.lines);
+		if (opts->normal || opts->words)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
+				(PADDING + word_padding) - intlen(totals.words), totals.words);
+		if (opts->normal || opts->chars)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
+				(PADDING + line_padding) - intlen(totals.lines), totals.chars);
+		if (opts->bytes)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
+				(PADDING + line_padding) - intlen(totals.lines), totals.bytes);
+		if (opts->width)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
+				(PADDING + line_padding) - intlen(totals.lines), totals.width);
+		fprintf(stdout, "%c[%iC%s\n", 0x1B, PADDING, totals.path);
+	}
 }
 
 void
