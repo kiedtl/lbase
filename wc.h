@@ -10,8 +10,6 @@
 #define FILE_MAX 999
 
 /* argument parsing */
-usize files_len;
-
 typedef struct Options {
 	bool normal;
 	bool bytes;
@@ -22,6 +20,7 @@ typedef struct Options {
 } Options;
 
 typedef struct Result {
+	bool error;
 	u64 bytes;
 	u64 chars;
 	u64 lines;

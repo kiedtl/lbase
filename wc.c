@@ -10,6 +10,9 @@ struct Options *opts;
 int
 main(int argc, char *argv[])
 {
+	/* number of non-flag arguments, will be set in handle_main */
+	usize files_len = 0;
+
 	/* default options */
 	opts = (struct Options*) malloc(1 * sizeof(struct Options*));
 	if (opts == NULL) {
@@ -24,18 +27,10 @@ main(int argc, char *argv[])
 		opts->words   = FALSE;
 	}
 
-	/* read stdin if no arguments */
-	if (argc < 2) {
-		struct Result result[1];
-		result[0] = wc(stdin, " ");
-		format_results(result, 1);
-		return 0;
-	}
-
 	/* parse arguments with argoat */
 	char *files[FILE_MAX];
 	const struct argoat_sprig sprigs[14] = {
-		{ NULL,               0, NULL,                handle_main },
+		{ NULL,               0, (void*) &files_len,   handle_main },
 		{ "bytes",            0, (void*) &opts->bytes, handle_flag },
 		{ "c",                0, (void*) &opts->bytes, handle_flag },
 		{ "chars",            0, (void*) &opts->chars, handle_flag },
@@ -51,39 +46,49 @@ main(int argc, char *argv[])
 		{ "version",          0, NULL,                 version,    },
 	};
 
-	/* parse arguments, main loop is in handle_main  */
 	struct argoat args = { sprigs, sizeof(sprigs), files, 0, FILE_MAX };
-
-	/* number of non-flag arguments, will be set in handle_main */
-	file_count = 0;
 	argoat_graze(&args, argc, argv);
 
-	struct Result results[file_count];
+	struct Result results[files_len];
 
 	/* main loop */
-	for (usize i = 0; i < file_count; ++i) {
-		if (strcmp(pars[i], "-") == 0) {
+
+	/* read from stdin if no files provided */
+	if (argc < 2 || files_len == 0) {
+		results[0] = wc(stdin, " ");
+		format_results(results, 1);
+		if (opts) free(opts);
+		return 0;
+	}
+
+	for (usize i = 0; i < files_len; ++i) {
+		if (strcmp(files[i], "-") == 0) {
 			results[i] = wc(stdin, " ");
 			continue;
 		}
 
 		FILE *f;
-		if ((f = fopen(pars[i], "r")) == NULL) {
-			EPRINT("%s: %s: ", NAME, pars[i]);
+		if ((f = fopen(files[i], "r")) == NULL) {
+			EPRINT("%s: %s: ", NAME, files[i]);
 			perror("");
+
+			results[i].error = TRUE;
 			continue;
 		}
 		
-		results[i] = wc(f, pars[i]);
+		results[i] = wc(f, files[i]);
 	}
 
-	format_results(results, pars_count);
+	format_results(results, files_len);
+
+	if (opts) free(opts);
+	return 0;
 }
 
 void
 handle_main(void *data, char **pars, const int pars_count)
 {
-	files_len = pars_count;
+	*((usize*) data) = pars_count;
 }
 
 void
@@ -97,6 +102,7 @@ struct Result
 wc(FILE *f, char *path)
 {
 	struct Result result = {
+		result.error = FALSE,
 		result.bytes = 0,
 		result.chars = 0,
 		result.lines = 0,
@@ -148,6 +154,7 @@ format_results(struct Result results[], usize count)
 	usize width_padding = 0;
 
 	struct Result totals = {
+		totals.error = FALSE,
 		totals.bytes = 0,
 		totals.chars = 0,
 		totals.lines = 0,
@@ -158,6 +165,8 @@ format_results(struct Result results[], usize count)
 
 	/* calculate maximum width and totals */
 	for (usize i = 0; i < count; ++i) {
+		if (results[i].error) continue;
+
 		totals.bytes += results[i].bytes;
 		usize byte_len = intlen(results[i].bytes);
 		if (byte_len > byte_padding)
@@ -187,6 +196,8 @@ format_results(struct Result results[], usize count)
 	/* print out padding, then information */
 	/* TODO: cleanup */
 	for (usize i = 0; i < count; ++i) {
+		if (results[i].error) continue;
+
 		/* print newlines */
 		if (opts->normal || opts->lines)
 			fprintf(stdout, "%c[%iC%lli", 0x1B, 
@@ -230,11 +241,6 @@ format_results(struct Result results[], usize count)
 				0x1B, (PADDING + byte_padding) - intlen(totals.bytes), totals.bytes,
 				0x1B, (PADDING + width_padding) - intlen(totals.width), totals.width,
 				0x1B, PADDING, totals.path);
-
-
-
-
-
 }
 
 void
