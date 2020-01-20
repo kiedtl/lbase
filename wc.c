@@ -178,27 +178,32 @@ format_results(struct Result results[], usize count)
 	/* TODO: cleanup */
 	for (usize i = 0; i < count; ++i) {
 		/* print newlines */
-		fprintf(stdout, "%c[%iC%lli", 0x1B, 
+		if (opts->normal || opts->lines)
+			fprintf(stdout, "%c[%iC%lli", 0x1B, 
 				(PADDING + line_padding) - intlen(results[i].lines),
 				results[i].lines);
 
 		/* print word count */
-		fprintf(stdout, "%c[%iC%lli", 0x1B,
+		if (opts->normal || opts->words)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
 				(PADDING + word_padding) - intlen(results[i].words),
 				results[i].words);
 
 		/* print characters */
-		fprintf(stdout, "%c[%iC%lli", 0x1B,
+		if (opts->normal || opts->chars)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
 				(PADDING + char_padding) - intlen(results[i].chars),
 				results[i].chars);
 
 		/* print bytes */
-		fprintf(stdout, "%c[%iC%lli", 0x1B,
+		if (opts->bytes)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
 				(PADDING + byte_padding) - intlen(results[i].bytes),
 				results[i].bytes);
 
 		/* print maximum line length */
-		fprintf(stdout, "%c[%iC%lli", 0x1B,
+		if (opts->width)
+			fprintf(stdout, "%c[%iC%lli", 0x1B,
 				(PADDING + width_padding) - intlen(results[i].width),
 				results[i].width);
 
