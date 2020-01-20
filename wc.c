@@ -212,7 +212,7 @@ format_results(struct Result results[], usize count)
 
 	/* print total */
 	if (count > 1)
-		fprintf(stdout, "%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%s",
+		fprintf(stdout, "%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%lli%c[%iC%s\n",
 				0x1B, (PADDING + line_padding) - intlen(totals.lines), totals.lines,
 				0x1B, (PADDING + word_padding) - intlen(totals.words), totals.words,
 				0x1B, (PADDING + char_padding) - intlen(totals.chars), totals.chars,
