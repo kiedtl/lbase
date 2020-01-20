@@ -208,9 +208,7 @@ format_results(struct Result results[], usize count)
 				results[i].width);
 
 		/* print file path */
-		if (count > 1)
-			fprintf(stdout, "%c[%iC%s\n", 0x1B, PADDING, results[i].path);
-		else fprintf(stdout, "\n");
+		fprintf(stdout, "%c[%iC%s\n", 0x1B, PADDING, results[i].path);
 	}
 
 	/* print total */
