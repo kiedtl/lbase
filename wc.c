@@ -26,7 +26,9 @@ main(int argc, char *argv[])
 
 	/* read stdin if no arguments */
 	if (argc < 2) {
-		wc(stdin, "");
+		struct Result result[1];
+		result[0] = wc(stdin, " ");
+		format_results(result, 1);
 		return 0;
 	}
 
@@ -51,17 +53,17 @@ main(int argc, char *argv[])
 
 	/* parse arguments, main loop is in handle_main  */
 	struct argoat args = { sprigs, sizeof(sprigs), files, 0, FILE_MAX };
-	argoat_graze(&args, argc, argv);
-}
 
-void
-handle_main(void *data, char **pars, const int pars_count)
-{
-	struct Result results[pars_count];
+	/* number of non-flag arguments, will be set in handle_main */
+	file_count = 0;
+	argoat_graze(&args, argc, argv);
+
+	struct Result results[file_count];
+
 	/* main loop */
-	for (usize i = 0; i < (usize) pars_count; ++i) {
+	for (usize i = 0; i < file_count; ++i) {
 		if (strcmp(pars[i], "-") == 0) {
-			wc(stdin, "");
+			results[i] = wc(stdin, " ");
 			continue;
 		}
 
@@ -69,13 +71,19 @@ handle_main(void *data, char **pars, const int pars_count)
 		if ((f = fopen(pars[i], "r")) == NULL) {
 			EPRINT("%s: %s: ", NAME, pars[i]);
 			perror("");
-			exit(0);
+			continue;
 		}
-
+		
 		results[i] = wc(f, pars[i]);
 	}
 
 	format_results(results, pars_count);
+}
+
+void
+handle_main(void *data, char **pars, const int pars_count)
+{
+	files_len = pars_count;
 }
 
 void
