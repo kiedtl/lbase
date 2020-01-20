@@ -32,7 +32,7 @@ main(int argc, char *argv[])
 
 	/* parse arguments with argoat */
 	char *files[FILE_MAX];
-	const struct argoat_sprig sprigs[12] = {
+	const struct argoat_sprig sprigs[14] = {
 		{ NULL,               0, NULL,                handle_main },
 		{ "bytes",            0, (void*) &opts->bytes, handle_flag },
 		{ "c",                0, (void*) &opts->bytes, handle_flag },
