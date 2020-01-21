@@ -4,6 +4,9 @@
 # ignore object files
 *.o
 
+# ignore test files
+test
+
 # ignore binaries
 cat
 head
