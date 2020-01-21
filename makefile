@@ -3,6 +3,8 @@ WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
 	   -Wno-unused-parameter
 INC      = -Isub/ccommon/
 
+BIN      = cat head wc yes
+
 CC       = gcc
 CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb
 LDFLAGS  =
@@ -11,7 +13,7 @@ DESTDIR  =
 PREFIX   = /usr/local/
 
 all: lbase
-lbase: cat head wc
+lbase: $(BIN)
 
 clean:
 	rm -f cat head wc *.o
@@ -29,6 +31,10 @@ head: head.o argoat.o
 	@$(CC) $(CFLAGS)   -o $@ $^
 
 wc: wc.o argoat.o common.o
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS)   -o $@ $^
+
+yes: yes.o
 	@echo "CC\t$@"
 	@$(CC) $(CFLAGS)   -o $@ $^
 
