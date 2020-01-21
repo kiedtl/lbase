@@ -266,6 +266,24 @@ format_results(struct Result results[], usize count)
 void
 help(void *data, char **pars, const int pars_count)
 {
+	EPRINT("Usage: wc [OPTION] [FILE]\n");
+	EPRINT("Print (newline|word|char|bytes) count for FILE.\n");
+	EPRINT("If more than one FILE, print a total count.\n\n");
+	EPRINT("If no FILE is provided, or if FILE is -, read from stdin.\n\n");
+	EPRINT("FLAGS:\n");
+	EPRINT("    -c    --bytes              print byte count of FILE.\n");
+	EPRINT("    -m    --chars              print UTF-8 character count of FILE.\n");
+	EPRINT("    -l    --lines              print newline count of FILE.\n");
+	EPRINT("    -w    --words              print word count of FILE.\n");
+	EPRINT("    -L    --max-line-length    print maximum line length of FILE.\n");
+	EPRINT("    -h    --help               print this help message and exit.\n");
+	EPRINT("          --version            print lbase version and exit.\n\n");
+	EPRINT("EXAMPLES:\n");
+	EPRINT("    wc FILE -l    print line count from FILE.\n");
+	EPRINT("    wc -cwl       print character, word, and line count from stdin.\n");
+	EPRINT("    wc            same as above.\n\n");
+	EPRINT("Report bugs to https://github.com/kiedtl/lbase.\n");
+
 	exit(0);
 }
 
