@@ -7,6 +7,7 @@ A reimplementation of the GNU coreutils with a focus on speed and size.
 - certain flags will not be supported (e.g. `cat -v`).
 - no attempt is currently being made at being POSIX-compliant. The goal is
 to get these tools working properly first.
+- UTF8 support is primitive at best. This will be fixed later.
 
 If you want to change my mind, open an issue and I'll consider it.
 
