@@ -113,16 +113,24 @@ wc(FILE *f, char *path)
 
 	u64 c_width   = 0;
 
-	i32 last_char = 0;
 	i32 c         = 0;
+	bool word     = FALSE;
 
 	while ((c = getc(f)) != EOF) {
 		/* count bytes */
 		++result.bytes;
 
-		/* count UTF-8 characters */
-		if ((c & 0xc0) != 0x80)
+		/*
+		 * count UTF-8 characters
+		 * skip UTF-8 continuation characters
+		 */
+		if ((c & 0xc0) != 0x80) {
 			++result.chars;
+
+			/* tabs have a width of 8 */
+			if (c == 9) c_width += 8;
+			else ++c_width;
+		}
 
 		/* count newlines/line width */
 		if (c == 10) {
@@ -133,12 +141,14 @@ wc(FILE *f, char *path)
 			++result.lines;
 		}
 
-		/* count non-consecutive spaces */
-		if (last_char != 32 && c == 32)
-			++result.words;
+		/* count words */
 
-		last_char = c;
-		++c_width;
+		if (c != 32)
+			word = TRUE;
+		else if (word) {
+			word = FALSE;
+			++result.words;
+		}
 	}
 
 	return result;
