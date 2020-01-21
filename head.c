@@ -105,6 +105,22 @@ head(FILE *f, struct Options *opts)
 void
 help(void *data, char **pars, const int pars_count)
 {
+	EPRINT("Usage: %s [OPTIONS] [FILE]\n", NAME);
+	EPRINT("Print the first 10 lines of each provided FILE to stdout.\n");
+	EPRINT("With more than one FILE, precede each with a header giving the file path.\n");
+	EPRINT("With no FILE, or when FILE is -, read from stdin.\n\n");
+	EPRINT("FLAGS:\n");
+	EPRINT("     -q    --quiet      never print headers for FILE.\n");
+	EPRINT("           --silent     same as --quiet.\n");
+	EPRINT("     -v    --verbose    always print headers for FILE.\n");
+	EPRINT("     -h    --help       show this help and exit.\n");
+	EPRINT("           --version    print lbase version and exit.\n\n");
+	EPRINT("OPTIONS:\n");
+	EPRINT("    -c     --bytes [NUM]    print first NUM bytes of FILE.\n");
+	EPRINT("    -n     --lines [NUM]    print first NUM lines of FILE.\n\n");
+	EPRINT("lbase head supports all multiplier suffixes of GNU head: b, kB, KiB, etc.\n\n");
+	EPRINT("Report issues to https://github.com/kiedtl/lbase.\n");
+
 	exit(0);
 }
 
