@@ -85,14 +85,15 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] echo
 - [ ] printf
 - [x] yes
-	- 1/6 as small as GNU `yes`, and twice as fast.
+	- 1/6 the size of GNU `yes`, and twice as fast.
 - [ ] false
 - [ ] true
 - [ ] test
 - [ ] expr
 - [ ] tee
 - [ ] dirname
-- [ ] basename
+- [x] basename
+	- 1/6 the size of GNU `basename`, and slightly faster.
 - [ ] pathchk
 - [ ] mktemp
 - [ ] realpath
