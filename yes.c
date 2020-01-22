@@ -48,4 +48,12 @@ yes(char *string, usize size)
 void
 help(void)
 {
+	EPRINT("Usage: %s [STRING]\n", NAME);
+	EPRINT("   or: %s [--help|--version]\n\n", NAME);
+	EPRINT("Repeatedly output STRING until terminated.\n");
+	EPRINT("When STRING is null, output 'y'.\n\n");
+	EPRINT("FLAGS:\n");
+	EPRINT("    --help       display this help and exit.\n");
+	EPRINT("    --version    display version and exit.\n\n");
+	EPRINT("Report bugs to https://github.com/kiedtl/lbase.\n");
 }
