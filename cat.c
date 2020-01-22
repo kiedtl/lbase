@@ -125,6 +125,7 @@ cat(FILE *f, char *path)
 
 	while ((nread = fread(buffer, 1, chunk, f)) > 0)
 		fwrite(buffer, sizeof(char), chunk, stdout);
-
-	fclose(f);
+	
+	if (f == stdin)
+		fclose(f);
 }
