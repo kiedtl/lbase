@@ -3,7 +3,7 @@ WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
 	   -Wno-unused-parameter
 INC      = -Isub/ccommon/
 
-BIN      = cat head wc yes
+BIN      = basename cat head wc yes
 
 CC       = gcc
 CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb
@@ -21,6 +21,10 @@ clean:
 .c.o:
 	@echo "CC\t$@"
 	@$(CC) $(CFLAGS) -c $<
+
+basename: basename.o
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS)   -o $@ $^
 
 cat: cat.o
 	@echo "CC\t$@"
