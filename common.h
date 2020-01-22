@@ -6,7 +6,7 @@
 #include "types.h"
 #define LBASE_VERSION  "0.0.1"
 
-#define VERSION(n)    fprintf(stdout, "lbase->%s v%s\n", n, LBASE_VERSION);
+#define VERSION(n)    fprintf(stdout, "%s (lbase) v%s\n", n, LBASE_VERSION);
 #define EPRINT(...)   fprintf(stderr, __VA_ARGS__);
 
 usize intlen(u64 i);
