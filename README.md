@@ -33,7 +33,10 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] tail
 - [ ] split
 - [ ] csplit
-- [ ] wc
+- [x] wc
+	- **x25** faster than GNU `wc`
+	- does not (and won't) support `--files0-from`
+	- doesn't properly support `--max-line-width` (yet).
 - [ ] sum
 - [ ] chsum
 - [ ] b2sum
@@ -81,7 +84,8 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] truncate
 - [ ] echo
 - [ ] printf
-- [ ] yes
+- [x] yes
+	- 1/6 as small as GNU `yes`, and twice as fast.
 - [ ] false
 - [ ] true
 - [ ] test
