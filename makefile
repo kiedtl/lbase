@@ -16,7 +16,7 @@ all: lbase
 lbase: $(BIN)
 
 clean:
-	rm -f cat head wc *.o
+	rm -f $(BIN) *.o
 
 .c.o:
 	@echo "CC\t$@"
