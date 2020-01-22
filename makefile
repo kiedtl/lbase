@@ -3,7 +3,7 @@ WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
 	   -Wno-unused-parameter
 INC      = -Isub/ccommon/
 
-BIN      = basename cat head wc yes
+BIN      = basename cat head wc yes true false
 
 CC       = gcc
 CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb
@@ -39,6 +39,14 @@ wc: wc.o argoat.o common.o
 	@$(CC) $(CFLAGS)   -o $@ $^
 
 yes: yes.o
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS)   -o $@ $^
+
+true: true.o
+	@echo "CC\t$@"
+	@$(CC) $(CFLAGS)   -o $@ $^
+
+false: false.o
 	@echo "CC\t$@"
 	@$(CC) $(CFLAGS)   -o $@ $^
 
