@@ -86,8 +86,8 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] printf
 - [x] yes
 	- 1/6 the size of GNU `yes`, and twice as fast.
-- [ ] false
-- [ ] true
+- [x] false
+- [x] true
 - [ ] test
 - [ ] expr
 - [ ] tee
