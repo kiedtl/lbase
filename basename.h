@@ -11,6 +11,6 @@
 usize files_len;
 
 /* function prototypes */
-void basename(char *operand);
+void help(void);
 
 #endif

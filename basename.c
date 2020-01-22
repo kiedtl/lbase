@@ -1,3 +1,4 @@
+#include <libgen.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,36 +15,42 @@ main(int argc, char **argv)
 		return 0;
 	}
 
-	basename(argv[1]);
-}
-
-/*
- * FIXME: condense multiple loops into one loop(?)
- */
-void
-basename(char *operand)
-{
-	usize size = strlen(operand);
-
-	/* handle strings that are // */
-	if (strcmp(operand, "//") == 0) {
-		fprintf(stdout, "//\n");
-		exit(0);
+	if (strcmp(argv[1], "--help") == 0
+			|| strcmp(argv[1], "-h") == 0) {
+		help();
+		return 0;
+	} else if (strcmp(argv[1], "--version") == 0) {
+		VERSION(NAME);
+		return 0;
 	}
 
 	/*
-	 * check if string is entirely /, and if so,
-	 * output / and exit.
+	 * remove suffix
 	 */
-	bool isall = FALSE;
-	for (usize i = 0; i < size; ++i) {
-		if (operand[i] == "/")
-			isall = TRUE;
-		else isall = FALSE;
+	isize offset;
+	char *result = basename(argv[1]);
+	if (argc > 2) {
+		offset = strlen(result) - strlen(argv[2]);
+		if (offset > 0 && strcmp(result + offset, argv[2]) == 0)
+			result[offset] = 0;
 	}
 
-	if (isall = TRUE) {
-		fprintf(stdout, "/");
-		exit(0);
-	}
+	puts(result);
+}
+
+void
+help(void)
+{
+	EPRINT("Usage: %s [PATH] [SUFFIX]\n", NAME);
+	EPRINT("   or: %s [--help|--version]\n\n", NAME);
+	EPRINT("Print PATH with just the filename. If SUFFIX is\n");
+	EPRINT("provided, PATH will be printed with SUFFIX removed.\n");
+	EPRINT("If PATH is null, . will be printed instead.\n\n");
+	EPRINT("FLAGS:\n");
+	EPRINT("    -h    --help       print this help message and exit.\n");
+	EPRINT("          --version    print version information and exit.\n\n");
+	EPRINT("EXAMPLES:\n");
+	EPRINT("    basename /usr/bin/basename          -> \"basename\"\n");
+	EPRINT("    basename /usr/include/stdio.h .h    -> \"stdio\"\n\n");
+	EPRINT("Report bugs to https://github.com/kiedtl/lbase.\n");
 }
