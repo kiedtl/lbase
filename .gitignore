@@ -10,6 +10,7 @@ test
 # ignore binaries
 basename
 cat
+echo
 head
 wc
 yes
