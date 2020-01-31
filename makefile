@@ -11,7 +11,7 @@ OBJ      = $(BIN:=.o)
 SRC      = $(BIN:=.c)
 
 CC       = cc
-LD       = lld
+LD       = gold
 CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb
 LDFLAGS  = -fuse-ld=$(LD)
 
