@@ -18,6 +18,7 @@ main(int argc, char *argv[])
 	if (opts == NULL) {
 		EPRINT("%s: unable to initialize options: ", NAME);
 		perror("");
+		exit(1);
 	} else {
 		opts->normal  = TRUE;
 		opts->bytes   = FALSE;
