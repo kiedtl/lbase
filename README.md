@@ -82,7 +82,9 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] stat
 - [ ] sync
 - [ ] truncate
-- [ ] echo
+- [x] echo
+        - TODO: optimize; this echo is currently 4x slower than GNU echo(!)
+	- TODO: support escape sequences (`echo -e`)
 - [ ] printf
 - [x] yes
 	- 1/6 the size of GNU `yes`, and twice as fast.
