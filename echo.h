@@ -11,6 +11,6 @@ typedef struct Options {
 } Options;
 
 /* function protoypes */
-void echo(usize from, usize size, char **string);
+void echo(usize from, usize size, char **string, struct Options *opts);
 
 #endif
