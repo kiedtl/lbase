@@ -24,7 +24,7 @@ main(int argc, char **argv)
 	bool isopts = FALSE;
 	if (strcmp(argv[1], "-n") == 0) {
 		isopts = TRUE;
-		opts->newlines = FALSE;
+		opts->newline = FALSE;
 	} else if (strcmp(argv[1], "-e") == 0) {
 		isopts = TRUE;
 		opts->escapes = TRUE;
