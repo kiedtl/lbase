@@ -23,7 +23,7 @@ all: $(BIN)
 clean:
 	rm -f $(BIN) *.o
 
-$(BIN): $(LIB) $(OBJ)
+$(BIN): $(LIB) $(@=.o)
 
 $(OBJ): common.h
 
