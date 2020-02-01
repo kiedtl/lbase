@@ -12,7 +12,8 @@ SRC      = $(BIN:=.c)
 
 CC       = cc
 LD       = gold
-CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb
+CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb \
+	   -D_BSD_SOURCE
 LDFLAGS  = -fuse-ld=$(LD)
 
 DESTDIR  =
