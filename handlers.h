@@ -18,5 +18,6 @@ void handle_bool(void *data, char **pars, const int pars_count);
 void handle_usize(void *data, char **pars, const int pars_count);
 void handle_number(void *data, char **pars, const int pars_count);
 void handle_mode(void *data, char **pars, const int pars_count);
+void handle_version(void *data, char **pars, const int pars_count);
 
 #endif

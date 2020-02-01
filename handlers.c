@@ -1,5 +1,6 @@
 #include <string.h>
 #include "types.h"
+#include "common.h"
 #include "handlers.h"
 
 void
@@ -272,4 +273,11 @@ handle_mode(void *data, char **pars, const int pars_count)
 	}
 
 	*((mode_t*) data) = mode & ~S_IFMT;
+}
+
+void
+handle_version(void *data, char **pars, const int pars_count)
+{
+	VERSION(NAME);
+	exit(0);
 }
