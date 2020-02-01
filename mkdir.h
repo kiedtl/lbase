@@ -16,4 +16,6 @@ typedef struct Options {
 
 struct Options *opts;
 
+usize mkdir(char *path, struct Options *opts);
+
 #endif
