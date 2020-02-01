@@ -139,10 +139,12 @@ handle_number(void *data, char **pars, const int pars_count)
 void
 handle_mode(void *data, char **pars, const int pars_count)
 {
-	char *end, *token;
-	usize op;
+	mode_t mode = 0777, mask = umask(0);
 
-	mode_t who = 0, perm, clear;
+	char *end, *token;
+	usize operator;
+
+	mode_t who, permissions, clear;
 
 	i64 oct = strtol(&pars[0], &end, 8);
 	
@@ -158,21 +160,22 @@ handle_mode(void *data, char **pars, const int pars_count)
 	}
 
 	while ((token = strsep(&pars[0], ","))) {
+		who = 0;
 		for (; *token; ++token) {
 			/* find out who's permission bits we're dealing with */
 			switch (*token) {
-				case 'u': /* user */
-					who |= S_IRWXU|S_ISUID;
-					continue;
-				case 'g': /* group */
-					who |= S_IRWXG|S_ISGID;
-					continue;
-				case 'o': /* other aka "everyone else" */
-					who |= S_IRWXO;
-					continue;
-				case 'a': /* all aka "everyone" */
-					who |= S_IRWXU|S_ISUID|S_IRWXG|S_ISGID|S_IRWXO;
-					continue;
+			case 'u': /* user */
+				who |= S_IRWXU|S_ISUID;
+				continue;
+			case 'g': /* group */
+				who |= S_IRWXG|S_ISGID;
+				continue;
+			case 'o': /* other */
+				who |= S_IRWXO;
+				continue;
+			case 'a': /* all */
+				who |= S_IRWXU|S_ISUID|S_IRWXG|S_ISGID|S_IRWXO;
+				continue;
 			}
 
 			break;
@@ -181,11 +184,92 @@ handle_mode(void *data, char **pars, const int pars_count)
 		if (who) {
 			clear = who;
 		} else {
-			clear = s_isuid|isgid|s_isvtx|s_irwxu|s_irwxg|s_irxwo;
 			who = ~mask;
+			clear = s_isuid|isgid|s_isvtx|s_irwxu|s_irwxg|s_irxwo;
 		}
 
 		while (*token) {
+			if (*token == '='
+				|| token == '+'
+				|| token == '-') {
+				operator = (usize) *token;
+			} else {
+				EPRINT("%s: '%s': invalid mode.\n", NAME, pars[0]);
+				exit(1);
+			}
+
+			perm = 0, ++token;
+			switch (*token) {
+			case 'u':
+				if (mode & S_IRUSR)
+					perm |= S_IRUSR|S_IRGRP|S_IROTH;
+				if (mode & S_IWUSR)
+					perm |= S_IWUSR|S_IWGRP|S_IWOTH;
+				if (mode & S_IXUSR)
+					perm |= S_IXUSR|S_IXGRP|S_IXOTH;
+				if (mode & S_SUID)
+					perm |= S_SUID|S_SGID;
+				++p;
+				break;
+			case 'g':
+				if (mode & S_IRGRP)
+					perm |= S_IRUSR|S_IRGRP|S_IROTH;
+				if (mode & S_IWGRP)
+					perm |= S_IWUSR|S_IWGRP|S_IWOTH;
+				if (mode & S_IXGRP)
+					perm |= S_IXUSR|S_IXGRP|S_IXOTH;
+				if (mode & S_SGID)
+					perm |= S_SUID|S_SGID;
+				++p;
+				break;
+			case 'o':
+				if (mode & S_IRGRP)
+					perm |= S_IRUSR|S_IRGRP|S_IROTH;
+				if (mode & S_IWGRP)
+					perm |= S_IWUSR|S_IWGRP|S_IWOTH;
+				if (mode & S_IXGRP)
+					perm |= S_IXUSR|S_IXGRP|S_IXOTH;
+				++p;
+				break;
+			default:
+				while (*token) {
+					switch (*token) {
+					case 'r':
+						permissions |=
+							S_IRUSR|S_IRGRP|S_IROTH;
+						break;
+					case 'w':
+						permissions |=
+							S_IRUSR|S_IRGRP|S_IROTH;
+						break;
+					case 'x':
+						permissions |=
+							S_IRUSR|S_IRGRP|S_IROTH;
+						break;
+					case 's':
+						permissions |= S_SUID|S_SGID;
+						break;
+					case 't':
+						permissions |= S_IVTX;
+						break;
+					default:
+						switch (operator) {
+						case '=':
+							mode &= ~clear;
+							/* FALLTHROUGH */
+						case '+':
+							mode |= permissions & who;
+							break;
+						case '-':
+							mode &= ~(permissions & who);
+							break;
+						}
+					}
+					++token;
+				}
+			}
 		}
 	}
+
+	*((mode_t*) data) = mode & ~S_IFMT;
 }
