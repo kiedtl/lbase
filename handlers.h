@@ -11,6 +11,7 @@
 #ifndef HANDLERS_H
 #define HANDLERS_H
 
+extern const char* name;
 
 /* function prototypes */
 void handle_main(void *data, char **pars, const int pars_count);

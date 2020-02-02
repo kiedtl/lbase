@@ -1,4 +1,7 @@
+#include <ctype.h>
+#include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include "types.h"
 #include "common.h"
 #include "handlers.h"
@@ -22,8 +25,8 @@ handle_usize(void *data, char **pars, const int pars_count)
 	 * behold: atoi() in just 7 lines!
 	 * credits: me (kiedtl), domsson (on codereview.stackexchange.com).
 	 */
-	usize buffer;
-	char *ptr = &pars[0];
+	usize buffer = 0;
+	char *ptr = pars[0];
 
 	while (*ptr) {
 		if (*ptr >= '0' && *ptr <= '9')
@@ -31,7 +34,7 @@ handle_usize(void *data, char **pars, const int pars_count)
 		++ptr;
 	}
 
-	*((usize*) data = buffer;
+	*((usize*) data) = buffer;
 }
 
 /*
@@ -72,7 +75,7 @@ handle_number(void *data, char **pars, const int pars_count)
         for (usize i = 0; contin && i < len; ++i, ++p) {
                 /* handle negative integers */
                 if (*p == '-' && i == 0) {
-                        EPRINT("%s: negative integers are invalid in this context.\n", NAME);
+                        EPRINT("%s: negative integers are invalid in this context.\n", name);
                         exit(1);
                 }
 
@@ -129,7 +132,7 @@ handle_number(void *data, char **pars, const int pars_count)
         else if (strcmp(suffix, "y") == 0 || strcmp(suffix, "yib") == 0)
                 amount = amount * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024 * 1024;
         else {
-                EPRINT("%s: either '%s' isn't a valid number,", NAME, pars[0]);
+                EPRINT("%s: either '%s' isn't a valid number,", name, pars[0]);
                 EPRINT("or '%s' is garbage.\n", suffix);
                 exit(1);
         }
@@ -147,13 +150,13 @@ handle_mode(void *data, char **pars, const int pars_count)
 
 	mode_t who, permissions, clear;
 
-	i64 oct = strtol(&pars[0], &end, 8);
+	i64 oct = strtol(pars[0], &end, 8);
 	
 	/* check if that's all there is */
 	if (*end == 0) {
 		/* check if mode is invalid */
 		if (oct < 0 || oct > 07777) {
-			EPRINT("%s: '%s': invalid mode.\n", NAME, pars[0]);
+			EPRINT("%s: '%s': invalid mode.\n", name, pars[0]);
 			exit(1);
 		}
 		
@@ -186,51 +189,53 @@ handle_mode(void *data, char **pars, const int pars_count)
 			clear = who;
 		} else {
 			who = ~mask;
-			clear = s_isuid|isgid|s_isvtx|s_irwxu|s_irwxg|s_irxwo;
+			//clear = s_isuid|isgid|s_isvtx|s_irwxu|s_irwxg|s_irxwo;
+			clear = S_ISUID|S_ISGID|S_ISVTX|S_IRWXU|S_IRWXG|S_IRWXO;
 		}
 
 		while (*token) {
 			if (*token == '='
-				|| token == '+'
-				|| token == '-') {
+				|| *token == '+'
+				|| *token == '-') {
 				operator = (usize) *token;
 			} else {
-				EPRINT("%s: '%s': invalid mode.\n", NAME, pars[0]);
+				EPRINT("%s: '%s': invalid mode.\n", name, pars[0]);
 				exit(1);
 			}
 
-			perm = 0, ++token;
+			permissions = 0;
+			++token;
 			switch (*token) {
 			case 'u':
 				if (mode & S_IRUSR)
-					perm |= S_IRUSR|S_IRGRP|S_IROTH;
+					permissions |= S_IRUSR|S_IRGRP|S_IROTH;
 				if (mode & S_IWUSR)
-					perm |= S_IWUSR|S_IWGRP|S_IWOTH;
+					permissions |= S_IWUSR|S_IWGRP|S_IWOTH;
 				if (mode & S_IXUSR)
-					perm |= S_IXUSR|S_IXGRP|S_IXOTH;
-				if (mode & S_SUID)
-					perm |= S_SUID|S_SGID;
-				++p;
+					permissions |= S_IXUSR|S_IXGRP|S_IXOTH;
+				if (mode & S_ISUID)
+					permissions |= S_ISUID|S_ISGID;
+				++token;
 				break;
 			case 'g':
 				if (mode & S_IRGRP)
-					perm |= S_IRUSR|S_IRGRP|S_IROTH;
+					permissions |= S_IRUSR|S_IRGRP|S_IROTH;
 				if (mode & S_IWGRP)
-					perm |= S_IWUSR|S_IWGRP|S_IWOTH;
+					permissions |= S_IWUSR|S_IWGRP|S_IWOTH;
 				if (mode & S_IXGRP)
-					perm |= S_IXUSR|S_IXGRP|S_IXOTH;
-				if (mode & S_SGID)
-					perm |= S_SUID|S_SGID;
-				++p;
+					permissions |= S_IXUSR|S_IXGRP|S_IXOTH;
+				if (mode & S_ISGID)
+					permissions |= S_ISUID|S_ISGID;
+				++token;
 				break;
 			case 'o':
 				if (mode & S_IRGRP)
-					perm |= S_IRUSR|S_IRGRP|S_IROTH;
+					permissions |= S_IRUSR|S_IRGRP|S_IROTH;
 				if (mode & S_IWGRP)
-					perm |= S_IWUSR|S_IWGRP|S_IWOTH;
+					permissions |= S_IWUSR|S_IWGRP|S_IWOTH;
 				if (mode & S_IXGRP)
-					perm |= S_IXUSR|S_IXGRP|S_IXOTH;
-				++p;
+					permissions |= S_IXUSR|S_IXGRP|S_IXOTH;
+				++token;
 				break;
 			default:
 				while (*token) {
@@ -248,10 +253,10 @@ handle_mode(void *data, char **pars, const int pars_count)
 							S_IRUSR|S_IRGRP|S_IROTH;
 						break;
 					case 's':
-						permissions |= S_SUID|S_SGID;
+						permissions |= S_ISUID|S_ISGID;
 						break;
 					case 't':
-						permissions |= S_IVTX;
+						permissions |= S_ISVTX;
 						break;
 					default:
 						switch (operator) {
@@ -278,6 +283,6 @@ handle_mode(void *data, char **pars, const int pars_count)
 void
 handle_version(void *data, char **pars, const int pars_count)
 {
-	VERSION(NAME);
+	VERSION(name);
 	exit(0);
 }

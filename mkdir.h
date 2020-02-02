@@ -4,8 +4,7 @@
 #include <sys/stat.h>
 #include "argoat.h"
 
-#define NAME "mkdir"
-
+const char *name = "mkdir";
 mode_t mask;
 
 typedef struct Options {
