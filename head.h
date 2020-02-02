@@ -5,7 +5,7 @@
 #include "argoat.h"
 #include "types.h"
 
-const char* name;
+const char* name = "head";
 
 /* limitation of argoat, not head */
 #define FILE_MAX 999
