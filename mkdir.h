@@ -2,6 +2,7 @@
 #define MKDIR_H
 
 #include <sys/stat.h>
+#include "types.h"
 #include "argoat.h"
 
 const char *name = "mkdir";
@@ -15,6 +16,7 @@ typedef struct Options {
 
 struct Options *opts;
 
-usize mkdir(char *path, struct Options *opts);
+isize makedir(char *path, struct Options *opts);
+void help(void *data, char **pars, const int pars_count);
 
 #endif
