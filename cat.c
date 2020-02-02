@@ -37,7 +37,7 @@ main(int argc, char *argv[])
 						help();
 						return 0;
 					} else if (strcmp(argv[i], "--version") == 0) {
-						VERSION(NAME);
+						VERSION(name);
 						return 0;
 					}
 
@@ -61,7 +61,7 @@ main(int argc, char *argv[])
 					break;
 				/* everything else */
 				default:
-					EPRINT("%s: unknown option '%c'.\n", NAME, argv[i][1]);
+					EPRINT("%s: unknown option '%c'.\n", name, argv[i][1]);
 					return 0;
 					break;
 				}
@@ -70,7 +70,7 @@ main(int argc, char *argv[])
 
 		FILE *f;
 		if ((f = fopen(argv[i], "r")) == NULL) {
-			EPRINT("%s: %s: ", NAME, argv[i]);
+			EPRINT("%s: %s: ", name, argv[i]);
 			perror("");
 			return 0;
 		}
@@ -85,7 +85,7 @@ main(int argc, char *argv[])
 void
 help(void)
 {
-	EPRINT("Usage: %s [--help|--version] [FILE]...\n", NAME);
+	EPRINT("Usage: %s [--help|--version] [FILE]...\n", name);
 	EPRINT("Concatenate FILE(s) to stdout.\n");
 	EPRINT("With no arguments, or when FILE is -, stdin is read.\n\n");
 	EPRINT("FLAGS:\n")

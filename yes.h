@@ -8,8 +8,9 @@
 #define YES_H
 
 #include <stdio.h>
-#define NAME  "yes"
 #define SIZE  BUFSIZ * 2
+
+const char *name = "yes";
 
 /* function prototypes */
 void yes(char *string, usize size);

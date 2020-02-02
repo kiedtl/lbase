@@ -2,7 +2,8 @@
 #define BASENAME_H
 
 #include "types.h"
-#define NAME "basename"
+
+const char* name = "basename";
 
 /* limitation of argoat, not basename */
 #define FILE_MAX 999

@@ -16,7 +16,7 @@ main(int argc, char *argv[])
 			return 0;
 		} else if (strcmp(argv[1], "--version") == 0
 			|| strcmp(argv[1], "-v") == 0) {
-			VERSION(NAME);
+			VERSION(name);
 			return 0;
 		}
 	}
@@ -48,8 +48,8 @@ yes(char *string, usize size)
 void
 help(void)
 {
-	EPRINT("Usage: %s [STRING]\n", NAME);
-	EPRINT("   or: %s [--help|--version]\n\n", NAME);
+	EPRINT("Usage: %s [STRING]\n", name);
+	EPRINT("   or: %s [--help|--version]\n\n", name);
 	EPRINT("Repeatedly output STRING until terminated.\n");
 	EPRINT("When STRING is null, output 'y'.\n\n");
 	EPRINT("FLAGS:\n");

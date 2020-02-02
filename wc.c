@@ -4,6 +4,7 @@
 #include "common.h"
 #include "argoat.h"
 #include "types.h"
+#include "handlers.h"
 
 struct Options *opts;
 
@@ -16,7 +17,7 @@ main(int argc, char *argv[])
 	/* default options */
 	opts = (struct Options*) malloc(1 * sizeof(struct Options*));
 	if (opts == NULL) {
-		EPRINT("%s: unable to initialize options: ", NAME);
+		EPRINT("%s: unable to initialize options: ", name);
 		perror("");
 		exit(1);
 	} else {
@@ -31,20 +32,20 @@ main(int argc, char *argv[])
 	/* parse arguments with argoat */
 	char *files[FILE_MAX];
 	const struct argoat_sprig sprigs[14] = {
-		{ NULL,               0, (void*) &files_len,   handle_main },
-		{ "bytes",            0, (void*) &opts->bytes, handle_flag },
-		{ "c",                0, (void*) &opts->bytes, handle_flag },
-		{ "chars",            0, (void*) &opts->chars, handle_flag },
-		{ "m",                0, (void*) &opts->chars, handle_flag },
-		{ "lines",            0, (void*) &opts->chars, handle_flag },
-		{ "l",                0, (void*) &opts->lines, handle_flag },
-		{ "words",            0, (void*) &opts->words, handle_flag },
-		{ "w",                0, (void*) &opts->words, handle_flag },
-		{ "max-lines-length", 0, (void*) &opts->width, handle_flag },
-		{ "L",                0, (void*) &opts->width, handle_flag },
-		{ "help",             0, NULL,                 help,       },
-		{ "h",                0, NULL,                 help,       },
-		{ "version",          0, NULL,                 version,    },
+		{ NULL,               0, (void*) &files_len,   handle_main    },
+		{ "bytes",            0, (void*) &opts->bytes, handle_bool    },
+		{ "c",                0, (void*) &opts->bytes, handle_bool    },
+		{ "chars",            0, (void*) &opts->chars, handle_bool    },
+		{ "m",                0, (void*) &opts->chars, handle_bool    },
+		{ "lines",            0, (void*) &opts->chars, handle_bool    },
+		{ "l",                0, (void*) &opts->lines, handle_bool    },
+		{ "words",            0, (void*) &opts->words, handle_bool    },
+		{ "w",                0, (void*) &opts->words, handle_bool    },
+		{ "max-lines-length", 0, (void*) &opts->width, handle_bool    },
+		{ "L",                0, (void*) &opts->width, handle_bool    },
+		{ "help",             0, NULL,                 help,          },
+		{ "h",                0, NULL,                 help,          },
+		{ "version",          0, NULL,                 handle_version },
 	};
 
 	struct argoat args = { sprigs, sizeof(sprigs), files, 0, FILE_MAX };
@@ -70,7 +71,7 @@ main(int argc, char *argv[])
 
 		FILE *f;
 		if ((f = fopen(files[i], "r")) == NULL) {
-			EPRINT("%s: %s: ", NAME, files[i]);
+			EPRINT("%s: %s: ", name, files[i]);
 			perror("");
 
 			results[i].error = TRUE;
@@ -84,19 +85,6 @@ main(int argc, char *argv[])
 
 	if (opts) free(opts);
 	return 0;
-}
-
-void
-handle_main(void *data, char **pars, const int pars_count)
-{
-	*((usize*) data) = pars_count;
-}
-
-void
-handle_flag(void *data, char **pars, const int pars_count)
-{
-	opts->normal = FALSE;
-	*((bool*) data) = TRUE;
 }
 
 struct Result
@@ -285,12 +273,5 @@ help(void *data, char **pars, const int pars_count)
 	EPRINT("    wc            same as above.\n\n");
 	EPRINT("Report bugs to https://github.com/kiedtl/lbase.\n");
 
-	exit(0);
-}
-
-void
-version(void *data, char **pars, const int pars_count)
-{
-	VERSION(NAME);
 	exit(0);
 }

@@ -2,7 +2,8 @@
 #define CAT_H
 
 #include <stdio.h>
-#define NAME  "cat"
+
+const char* name = "cat";
 
 void cat(FILE *f, char *path);
 void help(void);

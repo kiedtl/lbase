@@ -2,7 +2,8 @@
 #define ECHO_H
 
 #include "types.h"
-#define NAME "echo"
+
+const char* name = "echo";
 
 /* argument parsing */
 typedef struct Options {

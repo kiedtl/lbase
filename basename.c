@@ -20,7 +20,7 @@ main(int argc, char **argv)
 		help();
 		return 0;
 	} else if (strcmp(argv[1], "--version") == 0) {
-		VERSION(NAME);
+		VERSION(name);
 		return 0;
 	}
 
@@ -41,8 +41,8 @@ main(int argc, char **argv)
 void
 help(void)
 {
-	EPRINT("Usage: %s [PATH] [SUFFIX]\n", NAME);
-	EPRINT("   or: %s [--help|--version]\n\n", NAME);
+	EPRINT("Usage: %s [PATH] [SUFFIX]\n", name);
+	EPRINT("   or: %s [--help|--version]\n\n", name);
 	EPRINT("Print PATH with just the filename. If SUFFIX is\n");
 	EPRINT("provided, PATH will be printed with SUFFIX removed.\n");
 	EPRINT("If PATH is null, . will be printed instead.\n\n");

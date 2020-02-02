@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include "argoat.h"
 #include "types.h"
-#define NAME     "head"
+
+const char* name;
 
 /* limitation of argoat, not head */
 #define FILE_MAX 999
@@ -22,9 +23,5 @@ typedef struct Options {
 /* function prototypes */
 void head(FILE *f, struct Options *opts);
 void help(void *data, char **pars, const int pars_count);
-void version(void *data, char **pars, const int pars_count);
-void handle_main(void *data, char **pars, const int pars_count);
-void handle_number(void *data, char **pars, const int pars_count);
-void handle_bool(void *data, char **pars, const int pars_count);
 
 #endif

@@ -1,3 +1,5 @@
+const char* name = "false";
+
 int
 main(void)
 {
