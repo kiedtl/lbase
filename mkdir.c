@@ -40,7 +40,6 @@ main(int argc, char **argv)
 		{ "help",    0, NULL,                   help },
 		{ "h",       0, NULL,                   help},
 		{ "version", 0, NULL,                   handle_version },
-		{ "v",       0, NULL,                   handle_version },
 	};
 
 	struct argoat args = { sprigs, sizeof(sprigs), files, 0, argc };
