@@ -65,7 +65,8 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] mv
 - [ ] rm
 - [ ] shred
-- [ ] mkdir
+- [x] mkdir
+	- won't support `-Z` and `--context`.
 - [ ] rmdir
 - [ ] unlink
 - [ ] mkfifo
