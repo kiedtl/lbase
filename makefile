@@ -1,3 +1,9 @@
+#
+# lbase: a reimplementation of the GNU coreutils
+# see the LICENSE for more information.
+#
+# NOTE: CFLAGS_OPTS is defined on a target-by-target basis
+
 .SUFFIXES: .o .c
 
 WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
@@ -12,17 +18,23 @@ SRC      = $(BIN:=.c)
 
 CC       = cc
 LD       = gold
-CFLAGS   = -std=c99 -O3 $(WARNINGS) $(INC) -ggdb \
+CFLAGS   = -std=c99 $(WARNINGS) $(INC) \
 	   -D_BSD_SOURCE
 LDFLAGS  = -fuse-ld=$(LD)
 
 DESTDIR  =
 PREFIX   = /usr/local/
 
-all: $(BIN)
+all: debug
 
 clean:
 	rm -f $(BIN) *.o
+
+debug: CFLAGS_OPTS := -ggdb
+debug: $(BIN)
+
+lbase: CFLAGS_OPTS := -O3 -s
+lbase: $(BIN)
 
 $(BIN): $(LIB) $(@=.o)
 
@@ -36,4 +48,4 @@ $(OBJ): common.h
 	@echo "CC\t$@"
 	@$(CC) $(CFLAGS) -c $<
 
-.PHONY: all clean
+.PHONY: all clean lbase debug
