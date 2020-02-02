@@ -6,7 +6,7 @@ WARNINGS = -Wall -Wextra -pedantic -Wmissing-prototypes \
 INC      = -Isub/ccommon/ -I.
 
 LIB      = common.o handlers.o argoat.o
-BIN      = basename cat echo head wc yes true false
+BIN      = basename cat echo false head mkdir wc yes true
 OBJ      = $(BIN:=.o)
 SRC      = $(BIN:=.c)
 
