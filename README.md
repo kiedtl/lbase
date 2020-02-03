@@ -3,10 +3,9 @@
 A reimplementation of the GNU coreutils with a focus on speed and size.
 
 **notes**:
-- some redundant utilities will not be supported (e.g. `tac` instead of `rev`).
 - certain flags will not be supported (e.g. `cat -v`).
 - no attempt is currently being made at being POSIX-compliant. The goal is
-to get these tools working properly first.
+to get these tools working first.
 - UTF8 support is primitive at best. This will be fixed later.
 
 If you want to change my mind, open an issue and I'll consider it.
@@ -18,7 +17,6 @@ If you want to change my mind, open an issue and I'll consider it.
 	- does not (and will not) support `-abeEnstTv`
 	- faster when reading small files, slower when reading larger files.
 - [ ] tac
-	- will not be supported.
 - [ ] nl
 - [ ] od
 - [ ] base32
@@ -67,6 +65,7 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] shred
 - [x] mkdir
 	- won't support `-Z` and `--context`.
+	- doesn't properly support `--mode` (yet).
 - [ ] rmdir
 - [ ] unlink
 - [ ] mkfifo
@@ -132,3 +131,6 @@ If you want to change my mind, open an issue and I'll consider it.
 - [ ] seq
 
 I'm probably missing some. Let me know in the issues, and I'll mention it here.
+
+## license
+This project is licensed under the MIT license.

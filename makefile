@@ -41,11 +41,11 @@ $(BIN): $(LIB) $(@=.o)
 $(OBJ): common.h
 
 .o:
-	@echo "CC\t$@"
+	@echo "LD        $@"
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LIB)
 
 .c.o:
-	@echo "CC\t$@"
+	@echo "CC        $@"
 	@$(CC) $(CFLAGS) -c $<
 
 .PHONY: all clean lbase debug
